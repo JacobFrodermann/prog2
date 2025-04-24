@@ -74,7 +74,7 @@ public class WordList {
         } else {
             guessedChars.add(c);
         }
-        return possibleWords.get(pickedWordIndex).contains(String.valueOf(c));
+        return possibleWords.get(pickedWordIndex).toLowerCase().contains(String.valueOf(Character.toLowerCase(c)));
     }
 
     public boolean hadBeenGuessed(){
