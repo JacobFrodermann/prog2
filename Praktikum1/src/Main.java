@@ -155,7 +155,7 @@ public class Main {
         public static void load() {
             try {
                 for (int i = 0; i < hangman.length; i++) {
-                    hangman[i] = ImageIO.read(new File("Praktikum1/assets/"+(i+1)+".png"));
+                    hangman[i] = ImageIO.read(new File("assets/"+(i+1)+".png"));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
