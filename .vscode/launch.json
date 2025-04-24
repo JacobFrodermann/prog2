@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "prog2",
+            "env": {
+                "_JAVA_AWT_WM_NONREPARENTING":1
+            }
+        }
+    ]
+}
