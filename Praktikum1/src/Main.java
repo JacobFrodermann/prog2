@@ -75,6 +75,7 @@ public class Main {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     FileDialog dia = new FileDialog(frame, "Liste Auswählen", FileDialog.LOAD);
+                    dia.setDirectory(System.getProperty("user.dir"));
                     dia.setFilenameFilter(new FilenameFilter() {
                                 @Override
                                 public boolean accept(File dir, String name) {
