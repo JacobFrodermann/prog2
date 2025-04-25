@@ -17,8 +17,8 @@ public class Main {
         boolean gameOver = false;
         int guesses = 0;
         JTextField input = new JTextField();
-        JButton restart = new JButton("Restart");
-        JButton eigeneWortListeAuswaehlen = new JButton("Eigene wortliste Auswáhlen");
+        JButton restartButton = new JButton("Restart");
+        JButton chooseCustomWordListButton = new JButton("Eigene wortliste Auswählen");
 
 
         void guess(String word) {
@@ -57,7 +57,7 @@ public class Main {
                     input.setText("");
                 }
             });
-            restart.addActionListener(new ActionListener() {
+            restartButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     guesses = 0;
@@ -71,7 +71,7 @@ public class Main {
                 }
             });
             JFrame frame = this;
-            eigeneWortListeAuswaehlen.addActionListener(new ActionListener() {
+            chooseCustomWordListButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     FileDialog dia = new FileDialog(frame, "Liste Auswählen", FileDialog.LOAD);
@@ -95,8 +95,8 @@ public class Main {
             JPanel bottom = new JPanel();
             bottom.setLayout(new BoxLayout(bottom, BoxLayout.X_AXIS));
             bottom.add(input, BorderLayout.WEST);
-            bottom.add(eigeneWortListeAuswaehlen, BorderLayout.CENTER);
-            bottom.add(restart, BorderLayout.EAST);
+            bottom.add(chooseCustomWordListButton, BorderLayout.CENTER);
+            bottom.add(restartButton, BorderLayout.EAST);
 
 
             add(bottom, BorderLayout.SOUTH);
