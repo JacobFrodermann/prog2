@@ -3,7 +3,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -21,7 +20,7 @@ public class WordList {
 
     public WordList(File file){
         possibleWords = new ArrayList<String>();
-        guessedChars = new ArrayList<>();
+        guessedChars = new ArrayList<Character>();
         if(file.exists() && file.isFile() && file.canRead()){
             try {
                 BufferedReader br = new BufferedReader(new FileReader(file));
