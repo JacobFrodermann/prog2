@@ -40,6 +40,7 @@ public class WordList {
         } else {
             System.err.println("Error: File is not readable");
         }
+        pickRandomWord();
     }
 
     public void pickRandomWord() {
