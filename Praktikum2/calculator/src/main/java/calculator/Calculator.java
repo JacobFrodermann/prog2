@@ -46,29 +46,50 @@ public class Calculator extends JFrame {
         // TODO
         // Add a new operation "Sub" for the subtraction of two integers as an (instance of a) Java
         // class (you have yet to write this class)
+        operations.put("Sub", new Sub());
+
 
         // TODO
         // Add a new operation "Mul" for the multiplication of two integers as an anonymous class
+        operations.put("Mul", new Operation() {
+            @Override
+            public int doOperation(int a, int b) {
+                return a * b;
+            }
+        });
 
         // TODO
         // Add a new operation "Div" for the division of two integers as a lambda expression
+        operations.put("Div", (a, b) -> a / b);
+
 
         operationSelector = new JComboBox<>();
         operations.forEach((key, value) -> operationSelector.addItem(key));
 
         // TODO
         // Replace the anonymous class with a lambda expression
+        /* OLD:
         operationSelector.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        try {
-                            result.setText("" + calculate());
-                        } catch (NumberFormatException ex) {
-                            System.out.println("Invalid input.");
-                        }
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        result.setText("" + calculate());
+                    } catch (NumberFormatException ex) {
+                        System.out.println("Invalid input.");
                     }
-                });
+                }
+            });
+            ?
+         */
+        operationSelector.addActionListener(
+            e -> {
+                try {
+                    result.setText("" + calculate());
+                } catch (NumberFormatException ex) {
+                    System.out.println("Invalid input.");
+                }
+            });
     }
 
     /**
