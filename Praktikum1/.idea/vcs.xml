@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../Praktikum2/calculator" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../Praktikum2/prog2_ybel_gitquest" vcs="Git" />
   </component>
 </project>
