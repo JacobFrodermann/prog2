@@ -1,1 +1,1 @@
-Bearbeite gerade Git Status erklären
+Git-Spiel
