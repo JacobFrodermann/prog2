@@ -63,15 +63,23 @@ public class LsfContactUtil {
         }
     }
 
+    private static class contactInfo {
+        String WayOfCommunication, Recipient;
+        contactInfo(String foo, String bar) {
+            WayOfCommunication = foo;
+            Recipient = bar;
+        }
+    }
 
     
     public static void contactStudents(
         List<Student> students,
         Function<Student, String> getRelevantInfo,
-        BiConsumer<Student, String> contactAction
+        BiConsumer<Student, contactInfo> contactAction,
+        String WayOfCommunication
     ) {
         for (var s : students) {
-            if (getRelevantInfo.apply(s).isEmpty()) contactAction.accept(s, "");
+            if (!getRelevantInfo.apply(s).isEmpty()) contactAction.accept(s, new contactInfo(WayOfCommunication, getRelevantInfo.apply(s)));
         }
     }
     /**
@@ -103,8 +111,8 @@ public class LsfContactUtil {
         // just a silly placeholder - imagine some serious code here
         System.out.println("Write to " + s.getName() + ": " + s.getAddress());
     }
-    public static void contact(Student s, String a) {
+    public static void contact(Student s, contactInfo info) {
         // just a silly placeholder - imagine some serious code here
-        System.out.println("Write to " + s.getName() + ": " + s.getAddress());
+        System.out.println(info.WayOfCommunication + s.getName() + ": " + info.Recipient);
     }
 }
