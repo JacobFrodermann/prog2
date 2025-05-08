@@ -25,9 +25,8 @@ public class Main {
         List<Student> sl = List.of(lea, mads, hans);
 
         // use the LsfContactUtil to contact our students
-        LsfContactUtil.emailStudents(sl);
-        LsfContactUtil.phoneStudents(sl);
-        LsfContactUtil.writeStudents(sl);
-        LsfContactUtil.contactStudents(sl, s -> {return s.getAddress();}, LsfContactUtil::contact, "Write to");
+        LsfContactUtil.contactStudents(sl, Student::getEmail, LsfContactUtil::contact, "EMail to");
+        LsfContactUtil.contactStudents(sl, Student::getPhone, LsfContactUtil::contact, "Call to ");
+        LsfContactUtil.contactStudents(sl, Student::getAddress, LsfContactUtil::contact, "Write to");
     }
 }
