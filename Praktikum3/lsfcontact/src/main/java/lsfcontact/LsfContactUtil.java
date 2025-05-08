@@ -63,7 +63,7 @@ public class LsfContactUtil {
         }
     }
 
-    private static class contactInfo {
+    static class contactInfo {
         String WayOfCommunication, Recipient;
         contactInfo(String foo, String bar) {
             WayOfCommunication = foo;
