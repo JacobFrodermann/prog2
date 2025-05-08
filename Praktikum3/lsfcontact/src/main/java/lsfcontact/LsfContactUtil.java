@@ -1,6 +1,8 @@
 package lsfcontact;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * Auxiliary module for the LSF for contacting students.
@@ -59,6 +61,17 @@ public class LsfContactUtil {
         }
     }
 
+
+    
+    public void contactStudents(
+        List<Student> students,
+        Predicate<Student> contactCriteria,
+        Consumer<Student> contactAction
+    ) {
+        for (var s : students) {
+            if (contactCriteria.test(s)) contactAction.accept(s);
+        }
+    }
     /**
      * Auxiliary function for sending an email to a student.
      *
