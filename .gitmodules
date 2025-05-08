@@ -1,3 +1,6 @@
 [submodule "Praktikum2/prog2_ybel_gitquest"]
 	path = Praktikum2/prog2_ybel_gitquest
 	url = https://github.com/Programmiermethoden-CampusMinden/prog2_ybel_gitquest.git
+[submodule "Praktikum3/prog2_ybel_lsfcontact"]
+	path = Praktikum3/prog2_ybel_lsfcontact
+	url = https://github.com/Programmiermethoden-CampusMinden/prog2_ybel_lsfcontact.git
