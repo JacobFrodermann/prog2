@@ -18,4 +18,15 @@ resolve in vscode
 
 git merge --continue
 
+## 3.
+
+Wenn identisch wird change nicht aufgeführt selber ort is bloß nervig bei conflict resolution
+
+## 4.
+
+git checkout end
+git rebase master
+
+Conflikte lösen
+
 
