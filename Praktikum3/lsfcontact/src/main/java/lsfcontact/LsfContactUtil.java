@@ -1,10 +1,12 @@
 package lsfcontact;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.logging.*;
 
 /**
  * Auxiliary module for the LSF for contacting students.
@@ -15,6 +17,22 @@ import java.util.function.Predicate;
  * <p>The module is quite limited - we can't even pass the message to be transmitted.
  */
 public class LsfContactUtil {
+
+    private static final Logger logger = Logger.getLogger(LsfContactUtil.class.getName());
+
+    static {
+        try {
+            FileHandler fileHandler = new FileHandler("contacts.csv", true);
+            fileHandler.setFormatter(new CSVFormatter());
+            logger.addHandler(fileHandler);
+            logger.setUseParentHandlers(false);
+            logger.setLevel(Level.INFO);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     /**
      * Contact students via email if they have registered an email address.
      *
@@ -63,25 +81,30 @@ public class LsfContactUtil {
         }
     }
 
-    static class contactInfo {
+    static class ContactInfo {
         String WayOfCommunication, Recipient;
-        contactInfo(String foo, String bar) {
+        ContactInfo(String foo, String bar) {
             WayOfCommunication = foo;
             Recipient = bar;
         }
     }
 
-    
+
     public static void contactStudents(
         List<Student> students,
         Function<Student, String> getRelevantInfo,
-        BiConsumer<Student, contactInfo> contactAction,
+        BiConsumer<Student, ContactInfo> contactAction,
         String WayOfCommunication
     ) {
         for (var s : students) {
-            if (!getRelevantInfo.apply(s).isEmpty()) contactAction.accept(s, new contactInfo(WayOfCommunication, getRelevantInfo.apply(s)));
+            String info = getRelevantInfo.apply(s);
+            if (!info.isEmpty()) {
+                contactAction.accept(s, new ContactInfo(WayOfCommunication, info));
+                logContact(s, WayOfCommunication, info);
+            }
         }
     }
+
     /**
      * Auxiliary function for sending an email to a student.
      *
@@ -111,8 +134,72 @@ public class LsfContactUtil {
         // just a silly placeholder - imagine some serious code here
         System.out.println("Write to " + s.getName() + ": " + s.getAddress());
     }
-    public static void contact(Student s, contactInfo info) {
+    public static void contact(Student s, ContactInfo info) {
         // just a silly placeholder - imagine some serious code here
         System.out.println(info.WayOfCommunication + s.getName() + ": " + info.Recipient);
     }
+
+    /**
+     * Logs the contact action including the calling class and method.
+     *
+     * @param s       the student
+     * @param mode    the communication mode
+     * @param address the used address (email, phone, postal)
+     */
+    private static void logContact(Student s, String mode, String address) {
+        StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+        String callerClass = findCallerClass(stack);
+        String callerMethod = findCallerMethod(stack);
+        logger.logp(Level.INFO, callerClass, callerMethod,
+            String.format("%s,%s,%s", s.getName(), address, mode));
+    }
+
+    /**
+     * Finds the calling class from the stack trace.
+     *
+     * @param stack the stack trace elements
+     * @return the calling class name
+     */
+    private static String findCallerClass(StackTraceElement[] stack) {
+        for (StackTraceElement e : stack) {
+            if (!e.getClassName().equals(LsfContactUtil.class.getName()) &&
+                !e.getClassName().startsWith("java.lang.Thread")) {
+                return e.getClassName();
+            }
+        }
+        return LsfContactUtil.class.getName();
+    }
+
+    /**
+     * Finds the calling method from the stack trace.
+     *
+     * @param stack the stack trace elements
+     * @return the calling method name
+     */
+    private static String findCallerMethod(StackTraceElement[] stack) {
+        for (StackTraceElement e : stack) {
+            if (!e.getClassName().equals(LsfContactUtil.class.getName()) &&
+                !e.getClassName().startsWith("java.lang.Thread")) {
+                return e.getMethodName();
+            }
+        }
+        return "unknown";
+    }
+
+    /**
+     * Custom CSV formatter for log records.
+     */
+    static class CSVFormatter extends Formatter {
+        @Override
+        public String format(LogRecord record) {
+            return String.format("%s,%s,%s,%s%n",
+                record.getLevel(),
+                record.getSourceMethodName(),
+                record.getSourceClassName(),
+                record.getMessage());
+        }
+    }
+
+
+
 }

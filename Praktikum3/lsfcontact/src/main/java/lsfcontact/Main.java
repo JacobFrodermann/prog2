@@ -1,6 +1,8 @@
 package lsfcontact;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /** Starter for the LSF Contact scenario. */
 public class Main {
@@ -23,6 +25,12 @@ public class Main {
 
         // create a list
         List<Student> sl = List.of(lea, mads, hans);
+
+        // this is how we can set the log level from outside
+        Logger logger = Logger.getLogger(LsfContactUtil.class.getName());
+        logger.setLevel(Level.INFO);
+
+
 
         // use the LsfContactUtil to contact our students
         LsfContactUtil.contactStudents(sl, Student::getEmail, LsfContactUtil::contact, "EMail to");
