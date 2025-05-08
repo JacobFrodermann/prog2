@@ -1,7 +1,9 @@
 package lsfcontact;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -63,13 +65,13 @@ public class LsfContactUtil {
 
 
     
-    public void contactStudents(
+    public static void contactStudents(
         List<Student> students,
-        Predicate<Student> contactCriteria,
-        Consumer<Student> contactAction
+        Function<Student, String> getRelevantInfo,
+        BiConsumer<Student, String> contactAction
     ) {
         for (var s : students) {
-            if (contactCriteria.test(s)) contactAction.accept(s);
+            if (getRelevantInfo.apply(s).isEmpty()) contactAction.accept(s, "");
         }
     }
     /**
@@ -98,6 +100,10 @@ public class LsfContactUtil {
      * @param s student the letter should be posted to
      */
     private static void write(Student s) {
+        // just a silly placeholder - imagine some serious code here
+        System.out.println("Write to " + s.getName() + ": " + s.getAddress());
+    }
+    public static void contact(Student s, String a) {
         // just a silly placeholder - imagine some serious code here
         System.out.println("Write to " + s.getName() + ": " + s.getAddress());
     }

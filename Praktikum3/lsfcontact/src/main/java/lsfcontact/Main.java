@@ -19,6 +19,8 @@ public class Main {
         mads.setPhone("0175 123 456 78");
         hans.setAddress("Irgendwostrasse 9, 12345 Irgendwo");
 
+        //test
+
         // create a list
         List<Student> sl = List.of(lea, mads, hans);
 
@@ -26,5 +28,6 @@ public class Main {
         LsfContactUtil.emailStudents(sl);
         LsfContactUtil.phoneStudents(sl);
         LsfContactUtil.writeStudents(sl);
+        LsfContactUtil.contactStudents(sl, s -> {return s.getAddress();}, LsfContactUtil::contact);
     }
 }
