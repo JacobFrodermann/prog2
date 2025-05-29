@@ -2,12 +2,26 @@
     "configurations": [
         {
             "type": "java",
+            "name": "NotMain",
+            "request": "launch",
+            "mainClass": "NotMain",
+            "projectName": "lsfcontact"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "lsfcontact.Main",
+            "projectName": "lsfcontact"
+        },
+        {
+            "type": "java",
             "name": "Main",
             "request": "launch",
             "mainClass": "Main",
             "projectName": "prog2",
             "env": {
-                "_JAVA_AWT_WM_NONREPARENTING":1
+                "_JAVA_AWT_WM_NONREPARENTING": 1
             }
         }
     ]
