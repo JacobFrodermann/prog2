@@ -39,7 +39,8 @@ public class FallingSystem extends System {
             .orElseThrow(() -> MissingComponentException.build(entity, PositionComponent.class));
     Tile currentTile = Game.tileAT(entityPosition);
     if (currentTile instanceof PitTile pitTile) {
-      return pitTile.isOpen();
+      if (pitTile.isOpen()) java.lang.System.out.println("Would have fallen");
+      return false;
     }
     return false;
   }

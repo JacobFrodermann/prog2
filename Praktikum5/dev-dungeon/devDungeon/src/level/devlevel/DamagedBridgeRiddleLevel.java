@@ -59,12 +59,12 @@ public class DamagedBridgeRiddleLevel extends DevDungeonLevel implements ITickab
       DialogFactory.showTextPopup(
           "I heard that a powerful artifact is hidden nearby. Rumor says it's just beyond an old bridge. Let's see if we can find it.",
           "Level " + DevDungeon.DUNGEON_LOADER.currentLevelIndex() + ": The Damaged Bridge");
-      ((ExitTile) this.endTile()).close(); // close exit at start (to force defeating the boss)
+      //((ExitTile) this.endTile()).close(); // close exit at start (to force defeating the boss)
       this.doorTiles().forEach(DoorTile::close);
       this.pitTiles()
           .forEach(
               pit -> {
-                pit.timeToOpen(50L * Game.currentLevel().RANDOM.nextInt(1, 5));
+                pit.timeToOpen(500L * Game.currentLevel().RANDOM.nextInt(1, 5));
                 pit.close();
               });
       this.handleFirstTick();
