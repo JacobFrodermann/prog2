@@ -20,7 +20,7 @@ import utils.EntityUtils;
 
 public class FallingSystem extends System {
 
-  public static boolean DEBUG_DONT_KILL = false;
+  public static boolean DEBUG_DONT_KILL = true;
 
   public FallingSystem() {
     super(PositionComponent.class, HealthComponent.class);
@@ -39,8 +39,7 @@ public class FallingSystem extends System {
             .orElseThrow(() -> MissingComponentException.build(entity, PositionComponent.class));
     Tile currentTile = Game.tileAT(entityPosition);
     if (currentTile instanceof PitTile pitTile) {
-      if (pitTile.isOpen()) java.lang.System.out.println("Would have fallen");
-      return false;
+      return true;
     }
     return false;
   }

@@ -223,8 +223,8 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
               .orElseThrow(() -> MissingComponentException.build(b, HealthComponent.class));
       bhc.onHit(
           (cause, dmg) -> {
-            int currentHealth = bhc.currentHealthpoints() - dmg.damageAmount();
-            int maxHealth = bhc.maximalHealthpoints();
+            int currentHealth = 1 - dmg.damageAmount();
+            int maxHealth = 1;
 
             DevDungeonRoom devDungeonRoom = this.getCurrentRoom();
             if (devDungeonRoom == null || devDungeonRoom != this.rooms.getLast()) {
