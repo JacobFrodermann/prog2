@@ -300,10 +300,11 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
 // applied extract variable
 // applied Decompose Conditional
 // applied extract variable
+// applied rename
 
   /** TODO: Refactor this method, and add JavaDoc */
-  public void lightTorch(DevDungeonRoom r, int i, boolean lit) {
-    Entity torchEntity = r.torches()[i];
+  public void lightTorch(DevDungeonRoom room, int i, boolean lit) {
+    Entity torchEntity = room.torches()[i];
     
     TorchComponent torchComponent = torchEntity
       .fetch(TorchComponent.class)
