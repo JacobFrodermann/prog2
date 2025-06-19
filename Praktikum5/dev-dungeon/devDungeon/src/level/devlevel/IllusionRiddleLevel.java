@@ -299,6 +299,7 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
 // Fixes:
 // applied extract variable
 // applied Decompose Conditional
+// applied extract variable
 
   /** TODO: Refactor this method, and add JavaDoc */
   public void lightTorch(DevDungeonRoom r, int i, boolean lit) {
@@ -312,11 +313,13 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
 
     if (torchComponent.lit() == lit) return;
     
-    torchEntity
+    InteractionComponent torchInteraction = torchEntity
         .fetch(InteractionComponent.class)
-        .orElseThrow(
-            () -> MissingComponentException.build(torchEntity, InteractionComponent.class))
-        .triggerInteraction(torchEntity, Game.hero().orElse(null));
+        .orElseThrow(() -> {
+          throw MissingComponentException.build(torchEntity, InteractionComponent.class);}
+        );
+
+    torchInteraction.triggerInteraction(torchEntity, Game.hero().orElse(null));
   }
 
   /**
