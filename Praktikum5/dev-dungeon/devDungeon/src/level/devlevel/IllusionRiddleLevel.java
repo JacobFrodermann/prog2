@@ -148,6 +148,12 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
     this.chestSpawns = new Coordinate[] {this.customPoints().get(161)};
   }
 
+// Smells
+// Long Method
+
+// Fixes
+// Extract Method
+
   @Override
   public void onTick(boolean isFirstTick) {
     if (isFirstTick) {
@@ -165,12 +171,8 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
               });
       this.rooms.forEach(DevDungeonRoom::spawnEntities);
 
-      // Create teleporters
-      for (int i = 65; i < 127; i += 2) {
-        TeleporterSystem.getInstance()
-            .registerTeleporter(
-                new Teleporter(this.customPoints().get(i), this.customPoints().get(i + 1)));
-      }
+
+     createTeleporters();
 
       // Setup TP Targets for TPBallSkill
       int[] roomIndices = {0, 1, 2, 3, 7};
@@ -289,6 +291,14 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
     }
 
     this.riddleHandler.onTick(isFirstTick);
+  }
+  
+  private void createTeleporters() {
+    for (int i = 65; i < 127; i += 2) {
+      TeleporterSystem.getInstance()
+        .registerTeleporter(
+          new Teleporter(this.customPoints().get(i), this.customPoints().get(i + 1)));
+    }
   }
 
 // Smells:
