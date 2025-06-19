@@ -213,8 +213,8 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
                 if (devDungeonRoom == null || devDungeonRoom != this.rooms.getLast()) {
                   return; // should not happen, just if boss dies while not in boss room
                 }
-                this.lightTorch(devDungeonRoom, 0, false);
-                this.lightTorch(devDungeonRoom, 1, false);
+                this.setTorchLit(devDungeonRoom, 0, false);
+                this.setTorchLit(devDungeonRoom, 1, false);
 
                 this.exitTiles().forEach(tile -> tile.tintColor(-1)); // Workaround due to FogOfWar
               });
@@ -233,8 +233,8 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
 
             double healthPercentage = (double) currentHealth / maxHealth;
             if (healthPercentage <= 0.5) {
-              this.lightTorch(devDungeonRoom, 0, true);
-              this.lightTorch(devDungeonRoom, 1, true);
+              this.setTorchLit(devDungeonRoom, 0, true);
+              this.setTorchLit(devDungeonRoom, 1, true);
             }
           });
 
@@ -301,9 +301,11 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
 // applied Decompose Conditional
 // applied extract variable
 // applied rename
+// rename method
 
   /** TODO: Refactor this method, and add JavaDoc */
   public void lightTorch(DevDungeonRoom room, int i, boolean lit) {
+  public void setTorchLit(DevDungeonRoom room, int i, boolean lit) {
     Entity torchEntity = room.torches()[i];
     
     TorchComponent torchComponent = torchEntity
