@@ -296,19 +296,24 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
 // repeated code (array access)
 // high indent
 
+// Fixes:
+// applied extract variable
+
   /** TODO: Refactor this method, and add JavaDoc */
   public void lightTorch(DevDungeonRoom r, int i, boolean lit) {
-    if (r.torches()[i]
+    Entity torchEntity = r.torches()[i];
+    
+    if (torchEntity
             .fetch(TorchComponent.class)
             .orElseThrow(
-                () -> MissingComponentException.build(r.torches()[i], TorchComponent.class))
+                () -> MissingComponentException.build(torchEntity, TorchComponent.class))
             .lit()
         == lit) return;
-    r.torches()[i]
+    torchEntity
         .fetch(InteractionComponent.class)
         .orElseThrow(
-            () -> MissingComponentException.build(r.torches()[i], InteractionComponent.class))
-        .triggerInteraction(r.torches()[i], Game.hero().orElse(null));
+            () -> MissingComponentException.build(torchEntity, InteractionComponent.class))
+        .triggerInteraction(torchEntity, Game.hero().orElse(null));
   }
 
   /**
