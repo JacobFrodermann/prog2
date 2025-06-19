@@ -152,7 +152,7 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
 // Long Method
 
 // Fixes
-// Extract Method 3x
+// Extract Method 4x
 
   @Override
   public void onTick(boolean isFirstTick) {
@@ -178,13 +178,7 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
 
       setupBossRoom();
 
-      // Draw teleporter connections
-      TeleporterSystem.getInstance().teleporter().stream()
-          .map(Teleporter::from)
-          .forEach((tp) -> this.tileAt(tp).tintColor(0x444444FF)); // dark tint for teleporter
-      TeleporterSystem.getInstance().teleporter().stream()
-          .map(Teleporter::to)
-          .forEach((tp) -> this.tileAt(tp).tintColor(0x444444FF)); // dark tint for teleporter
+      drawTeleporterConnections();
 
       Entity b =
           EntityUtils.spawnBoss(
@@ -309,7 +303,14 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
     }
 
 
-
+    private void drawTeleporterConnections() {
+      TeleporterSystem.getInstance().teleporter().stream()
+          .map(Teleporter::from)
+          .forEach((tp) -> this.tileAt(tp).tintColor(0x444444FF)); // dark tint for teleporter
+      TeleporterSystem.getInstance().teleporter().stream()
+          .map(Teleporter::to)
+          .forEach((tp) -> this.tileAt(tp).tintColor(0x444444FF)); // dark tint for teleporter
+    }
 
 // Smells:
 // long methods
