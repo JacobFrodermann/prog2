@@ -291,6 +291,11 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
     this.riddleHandler.onTick(isFirstTick);
   }
 
+// Smells:
+// long methods
+// repeated code (array access)
+// high indent
+
   /** TODO: Refactor this method, and add JavaDoc */
   public void lightTorch(DevDungeonRoom r, int i, boolean lit) {
     if (r.torches()[i]
