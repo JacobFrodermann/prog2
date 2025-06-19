@@ -152,7 +152,7 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
 // Long Method
 
 // Fixes
-// Extract Method 2x
+// Extract Method 3x
 
   @Override
   public void onTick(boolean isFirstTick) {
@@ -176,17 +176,7 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
 
       setupTPTargets();
 
-      // Open Pits for last room (boss room) and extinguish torches
-      this.rooms.getLast().tiles().stream()
-          .filter(t -> t.levelElement() == LevelElement.PIT)
-          .map(t -> (PitTile) t)
-          .forEach(PitTile::open);
-      for (Entity torch : this.rooms.getLast().torches()) {
-        torch
-            .fetch(InteractionComponent.class)
-            .orElseThrow(() -> MissingComponentException.build(torch, InteractionComponent.class))
-            .triggerInteraction(torch, Game.hero().orElse(null));
-      }
+      setupBossRoom();
 
       // Draw teleporter connections
       TeleporterSystem.getInstance().teleporter().stream()
@@ -305,6 +295,22 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
       }
     }
     
+    private void setupBossRoom() {
+      this.rooms.getLast().tiles().stream()
+          .filter(t -> t.levelElement() == LevelElement.PIT)
+          .map(t -> (PitTile) t)
+          .forEach(PitTile::open);
+      for (Entity torch : this.rooms.getLast().torches()) {
+        torch
+            .fetch(InteractionComponent.class)
+            .orElseThrow(() -> MissingComponentException.build(torch, InteractionComponent.class))
+            .triggerInteraction(torch, Game.hero().orElse(null));
+      }
+    }
+
+
+
+
 // Smells:
 // long methods
 // repeated code (array access)
