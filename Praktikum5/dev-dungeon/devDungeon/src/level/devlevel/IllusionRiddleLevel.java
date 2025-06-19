@@ -152,7 +152,7 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
 // Long Method
 
 // Fixes
-// Extract Method 4x
+// Extract Method
 
   @Override
   public void onTick(boolean isFirstTick) {
@@ -180,41 +180,9 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
 
       drawTeleporterConnections();
 
-      Entity b =
-          EntityUtils.spawnBoss(
-              BOSS_TYPE,
-              this.levelBossSpawn,
-              (e) -> {
-                ((FogOfWarSystem) Game.systems().get(FogOfWarSystem.class)).active(false);
-                // turn of all torches on death
-                DevDungeonRoom devDungeonRoom = this.getCurrentRoom();
-                if (devDungeonRoom == null || devDungeonRoom != this.rooms.getLast()) {
-                  return; // should not happen, just if boss dies while not in boss room
-                }
-                this.setTorchLit(devDungeonRoom, 0, false);
-                this.setTorchLit(devDungeonRoom, 1, false);
+      Entity b = spawnBoss();
 
-                this.exitTiles().forEach(tile -> tile.tintColor(-1)); // Workaround due to FogOfWar
-              });
-      HealthComponent bhc =
-          b.fetch(HealthComponent.class)
-              .orElseThrow(() -> MissingComponentException.build(b, HealthComponent.class));
-      bhc.onHit(
-          (cause, dmg) -> {
-            int currentHealth = 1 - dmg.damageAmount();
-            int maxHealth = 1;
-
-            DevDungeonRoom devDungeonRoom = this.getCurrentRoom();
-            if (devDungeonRoom == null || devDungeonRoom != this.rooms.getLast()) {
-              return;
-            }
-
-            double healthPercentage = (double) currentHealth / maxHealth;
-            if (healthPercentage <= 0.5) {
-              this.setTorchLit(devDungeonRoom, 0, true);
-              this.setTorchLit(devDungeonRoom, 1, true);
-            }
-          });
+      setupBossHealthComponent(b);
 
       // Secret Passages
       EntityUtils.spawnLever(
@@ -311,6 +279,51 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
           .map(Teleporter::to)
           .forEach((tp) -> this.tileAt(tp).tintColor(0x444444FF)); // dark tint for teleporter
     }
+
+
+    private Entity spawnBoss() {
+      Entity b =
+          EntityUtils.spawnBoss(
+              BOSS_TYPE,
+              this.levelBossSpawn,
+              (e) -> {
+                ((FogOfWarSystem) Game.systems().get(FogOfWarSystem.class)).active(false);
+                // turn of all torches on death
+                DevDungeonRoom devDungeonRoom = this.getCurrentRoom();
+                if (devDungeonRoom == null || devDungeonRoom != this.rooms.getLast()) {
+                  return; // should not happen, just if boss dies while not in boss room
+                }
+                this.setTorchLit(devDungeonRoom, 0, false);
+                this.setTorchLit(devDungeonRoom, 1, false);
+
+                this.exitTiles().forEach(tile -> tile.tintColor(-1)); // Workaround due to FogOfWar
+              });
+      return b; 
+    }
+
+    private void setupBossHealthComponent(Entity boss) {
+      HealthComponent bhc =
+          boss.fetch(HealthComponent.class)
+              .orElseThrow(() -> MissingComponentException.build(boss, HealthComponent.class));
+      bhc.onHit(
+          (cause, dmg) -> {
+            int currentHealth = 1 - dmg.damageAmount();
+            int maxHealth = 1;
+
+            DevDungeonRoom devDungeonRoom = this.getCurrentRoom();
+            if (devDungeonRoom == null || devDungeonRoom != this.rooms.getLast()) {
+              return;
+            }
+
+            double healthPercentage = (double) currentHealth / maxHealth;
+            if (healthPercentage <= 0.5) {
+              this.setTorchLit(devDungeonRoom, 0, true);
+              this.setTorchLit(devDungeonRoom, 1, true);
+            }
+          });
+    }
+
+
 
 // Smells:
 // long methods
