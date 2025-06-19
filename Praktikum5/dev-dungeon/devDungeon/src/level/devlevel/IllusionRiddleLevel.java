@@ -303,8 +303,15 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
 // applied rename
 // rename method
 
-  /** TODO: Refactor this method, and add JavaDoc */
-  public void lightTorch(DevDungeonRoom room, int i, boolean lit) {
+  /**
+   * Lights or Extinguishes Torch by index 
+   *  
+   * @param room DevDungeonRoom, the room congaing the torch
+   * @param i int, Index of desired torch
+   * @param lit booolean, desired state
+   * @throws MissingComponentException
+   * 
+   */
   public void setTorchLit(DevDungeonRoom room, int i, boolean lit) {
     Entity torchEntity = room.torches()[i];
     
