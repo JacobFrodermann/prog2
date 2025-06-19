@@ -172,18 +172,7 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
       this.lastRoom = this.getCurrentRoom();
     }
 
-    // Anti Torch Logic
-    if (this.lastRoom != null && this.lastTorchState != this.lastRoom.isAnyTorchActive()) {
-      this.lastTorchState = this.lastRoom.isAnyTorchActive();
-      if (this.lastRoom.isAnyTorchActive()) {
-        FogOfWarSystem.VIEW_DISTANCE = 3;
-        ((FogOfWarSystem) Game.systems().get(FogOfWarSystem.class)).revert();
-      } else {
-        FogOfWarSystem.VIEW_DISTANCE = this.originalFogOfWarDistance;
-        // no revert, is needed as the fog of war should only increase
-        // revert is only needed if the fog of war decreases in distance
-      }
-    }
+    doAntiTorchLogic();
 
     this.riddleHandler.onTick(isFirstTick);
   }
@@ -334,6 +323,20 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
     }
 
       
+    private void doAntiTorchLogic() {
+      if (this.lastRoom != null && this.lastTorchState != this.lastRoom.isAnyTorchActive()) {
+        this.lastTorchState = this.lastRoom.isAnyTorchActive();
+        if (this.lastRoom.isAnyTorchActive()) {
+          FogOfWarSystem.VIEW_DISTANCE = 3;
+          ((FogOfWarSystem) Game.systems().get(FogOfWarSystem.class)).revert();
+        } else {
+          FogOfWarSystem.VIEW_DISTANCE = this.originalFogOfWarDistance;
+          // no revert, is needed as the fog of war should only increase
+          // revert is only needed if the fog of war decreases in distance
+        }
+      }
+    }
+    
 // Smells:
 // long methods
 // repeated code (array access)
