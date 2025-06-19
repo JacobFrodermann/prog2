@@ -51,7 +51,7 @@ public class FallingSystem extends System {
         .ifPresent(
             hc -> {
               if (DEBUG_DONT_KILL && entity.isPresent(PlayerComponent.class)) {
-                this.teleportPlayerIfPossible();
+                //this.teleportPlayerIfPossible();
                 return;
               }
               hc.receiveHit(new Damage(hc.currentHealthpoints(), DamageType.FALL, entity));

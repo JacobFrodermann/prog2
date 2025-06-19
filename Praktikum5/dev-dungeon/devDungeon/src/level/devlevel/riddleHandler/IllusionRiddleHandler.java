@@ -66,6 +66,7 @@ public class IllusionRiddleHandler implements ITickable {
   }
 
   private void handleFirstTick() {
+    CameraSystem.camera().zoom += .5f;
     if (this.level.tileAt(this.riddleRewardSpawn) != null)
       this.level.tileAt(this.riddleRewardSpawn).tintColor(0x22FF22FF);
   }

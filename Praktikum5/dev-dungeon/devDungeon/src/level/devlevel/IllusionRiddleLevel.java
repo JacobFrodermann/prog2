@@ -64,7 +64,7 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
   public IllusionRiddleLevel(
       LevelElement[][] layout, DesignLabel designLabel, List<Coordinate> customPoints) {
     super(layout, designLabel, customPoints);
-    ((FogOfWarSystem) Game.systems().get(FogOfWarSystem.class)).active(true);
+    //((FogOfWarSystem) Game.systems().get(FogOfWarSystem.class)).active(true);
     this.riddleHandler = new IllusionRiddleHandler(customPoints, this);
 
     this.rooms =
@@ -281,7 +281,7 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
           "Wait, who turned off the lights? Try to find a way out of this dark place.",
           "Level " + DevDungeon.DUNGEON_LOADER.currentLevelIndex() + ": The Illusion Riddle");
 
-      ((ExitTile) this.endTile()).close(); // close exit at start (to force defeating the boss)
+      //((ExitTile) this.endTile()).close(); // close exit at start (to force defeating the boss)
       this.doorTiles().forEach(DoorTile::close);
       this.pitTiles()
           .forEach(
@@ -327,7 +327,7 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
       if (this.lastRoom != null && this.lastTorchState != this.lastRoom.isAnyTorchActive()) {
         this.lastTorchState = this.lastRoom.isAnyTorchActive();
         if (this.lastRoom.isAnyTorchActive()) {
-          FogOfWarSystem.VIEW_DISTANCE = 3;
+          FogOfWarSystem.VIEW_DISTANCE = 6;
           ((FogOfWarSystem) Game.systems().get(FogOfWarSystem.class)).revert();
         } else {
           FogOfWarSystem.VIEW_DISTANCE = this.originalFogOfWarDistance;
