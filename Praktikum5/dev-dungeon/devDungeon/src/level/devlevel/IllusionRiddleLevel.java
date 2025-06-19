@@ -156,39 +156,7 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
 
   @Override
   public void onTick(boolean isFirstTick) {
-    if (isFirstTick) {
-      DialogFactory.showTextPopup(
-          "Wait, who turned off the lights? Try to find a way out of this dark place.",
-          "Level " + DevDungeon.DUNGEON_LOADER.currentLevelIndex() + ": The Illusion Riddle");
-
-      ((ExitTile) this.endTile()).close(); // close exit at start (to force defeating the boss)
-      this.doorTiles().forEach(DoorTile::close);
-      this.pitTiles()
-          .forEach(
-              pit -> {
-                pit.timeToOpen(50L * Game.currentLevel().RANDOM.nextInt(1, 5));
-                pit.close();
-              });
-      this.rooms.forEach(DevDungeonRoom::spawnEntities);
-
-      createTeleporters();
-
-      setupTPTargets();
-
-      setupBossRoom();
-
-      drawTeleporterConnections();
-
-      Entity b = spawnBoss();
-
-      setupBossHealthComponent(b);
-
-      setupSecretPassages();
-
-      setupSecretPassages();
-
-      this.spawnChestsAndCauldrons();
-    }
+    if (isFirstTick) onFirstTick();
 
     if (this.lastRoom != this.getCurrentRoom()) {
       // Handle Mob AI (disable AI for mobs in other rooms, enable for mobs in current room)
@@ -328,9 +296,40 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
           new OpenPassageCommand(this.secretPassages[2][0], this.secretPassages[2][1]));
     }
 
+    
+    private void onFirstTick() {
+      DialogFactory.showTextPopup(
+          "Wait, who turned off the lights? Try to find a way out of this dark place.",
+          "Level " + DevDungeon.DUNGEON_LOADER.currentLevelIndex() + ": The Illusion Riddle");
 
+      ((ExitTile) this.endTile()).close(); // close exit at start (to force defeating the boss)
+      this.doorTiles().forEach(DoorTile::close);
+      this.pitTiles()
+          .forEach(
+              pit -> {
+                pit.timeToOpen(50L * Game.currentLevel().RANDOM.nextInt(1, 5));
+                pit.close();
+              });
+      this.rooms.forEach(DevDungeonRoom::spawnEntities);
 
+      createTeleporters();
 
+      setupTPTargets();
+
+      setupBossRoom();
+
+      drawTeleporterConnections();
+
+      Entity b = spawnBoss();
+
+      setupBossHealthComponent(b);
+
+      setupSecretPassages();
+
+      setupSecretPassages();
+
+      this.spawnChestsAndCauldrons();
+    }
 // Smells:
 // long methods
 // repeated code (array access)
