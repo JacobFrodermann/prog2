@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.Vector3;
 import contrib.components.AIComponent;
 import core.Entity;
 import core.Game;
+import core.components.FriendlyComponent;
+import core.components.PlayerComponent;
 import core.components.PositionComponent;
 import core.systems.CameraSystem;
 import core.utils.MissingHeroException;
@@ -94,10 +96,12 @@ public final class SkillTools {
                 () -> MissingComponentException.build(Game.hero().get(), PositionComponent.class));
     return pc.position();
   }
-  public static Point closesMonsterPostionAsPoint(Entity source) {
-    Point srcLoc = source.fetch(PositionComponent.class).get().position();
+  public static Point closesMonsterPostionAsPoint() {
+    Point srcLoc = Game.hero().get().fetch(PositionComponent.class).get().position();//source.fetch(PositionComponent.class).get().position();
     List<PositionComponent> monsters = Game.entityStream()
       .filter(e -> e.fetch(AIComponent.class).isPresent())
+      .filter(e -> !e.fetch(FriendlyComponent.class).isPresent())
+      .filter(e -> !e.fetch(PlayerComponent.class).isPresent())
       .map(e -> e.fetch(PositionComponent.class).get())
       .sorted((e1, e2) -> {
         double d1 = e1.position().distance(srcLoc);

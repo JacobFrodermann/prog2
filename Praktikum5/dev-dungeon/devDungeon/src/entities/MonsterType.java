@@ -46,8 +46,7 @@ public enum MonsterType {
               7f,
               0f,
               new Skill(
-                new FireballSkill(SkillTools::heroPositionAsPoint),  
-              //  new FireballSkill(SkillTools::closesMonsterPostionAsPoint),
+                 new FireballSkill(SkillTools::closesMonsterPostionAsPoint),
                   AIFactory.FIREBALL_COOL_DOWN));
                 },
     () -> new RadiusWalk(2f, 2),

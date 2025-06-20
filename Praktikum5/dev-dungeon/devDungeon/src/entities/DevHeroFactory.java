@@ -12,6 +12,7 @@ import contrib.utils.components.skill.Skill;
 import contrib.utils.components.skill.SkillTools;
 import core.Entity;
 import core.Game;
+import core.components.FriendlyComponent;
 import core.components.PlayerComponent;
 import core.components.PositionComponent;
 import core.components.VelocityComponent;
@@ -39,8 +40,9 @@ public class DevHeroFactory extends HeroFactory {
         loc.x = loc.x + ((float) Math.cos(rot)*dist);
         loc.y = loc.y + ((float) Math.sin(rot)*dist);
 
-        EntityUtils.spawnMonster(MonsterType.PROTECTOR, loc);
-      }, 1);
+        Entity prot = EntityUtils.spawnMonster(MonsterType.PROTECTOR, loc);
+        prot.add(new FriendlyComponent());
+      }, 100);
 
   /**
    * Update the skill used by the hero.
