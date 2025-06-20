@@ -19,14 +19,28 @@ import core.level.Tile;
 import core.level.utils.LevelUtils;
 import core.utils.Point;
 import core.utils.components.MissingComponentException;
+import utils.EntityUtils;
+
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 
 public class DevHeroFactory extends HeroFactory {
   public static final boolean ENABLE_MOUSE_MOVEMENT = true;
-  private static Skill SKILL =
-      new Skill(new BurningFireballSkill(SkillTools::cursorPositionAsPoint), 500L);
+  private static Skill FIREBALL_SKILL =
+      new Skill(new BurningFireballSkill(SkillTools::cursorPositionAsPoint), 5L);
+
+  private static Skill SUMMON_SKILL = 
+      new Skill((e) -> {
+        Point loc = e.fetch(PositionComponent.class).get().position();
+        int dist = 3;
+        float rot = new Random().nextFloat((float) Math.PI*2);
+        loc.x = loc.x + ((float) Math.cos(rot)*dist);
+        loc.y = loc.y + ((float) Math.sin(rot)*dist);
+
+        EntityUtils.spawnMonster(MonsterType.PROTECTOR, loc);
+      }, 1);
 
   /**
    * Update the skill used by the hero.
@@ -34,11 +48,11 @@ public class DevHeroFactory extends HeroFactory {
    * <p>This method should be called whenever the skill was modified, and needs to be updated.
    */
   public static void updateSkill() {
-    SKILL = new Skill(new BurningFireballSkill(SkillTools::cursorPositionAsPoint), 500L);
+    FIREBALL_SKILL = new Skill(new BurningFireballSkill(SkillTools::cursorPositionAsPoint), 500L);
   }
 
   public static Skill getSkill() {
-    return SKILL;
+    return FIREBALL_SKILL;
   }
 
   public static Entity newHero() throws IOException {
@@ -65,7 +79,9 @@ public class DevHeroFactory extends HeroFactory {
         pc, core.configuration.KeyboardConfig.MOVEMENT_LEFT_SECOND.value(), new Vector2(-1, 0));
 
     pc.registerCallback(
-        KeyboardConfig.FIRST_SKILL.value(), heroEntity -> SKILL.execute(heroEntity));
+        KeyboardConfig.FIRST_SKILL.value(), heroEntity -> FIREBALL_SKILL.execute(heroEntity));
+
+    pc.registerCallback(KeyboardConfig.SECOND_SKILL.value(), heroEntity -> SUMMON_SKILL.execute(heroEntity));
 
     // Mouse movement
     if (ENABLE_MOUSE_MOVEMENT) {
@@ -119,7 +135,7 @@ public class DevHeroFactory extends HeroFactory {
     if (!Objects.equals(
         KeyboardConfig.MOUSE_FIRST_SKILL.value(), KeyboardConfig.MOUSE_INTERACT_WORLD.value())) {
       pc.registerCallback(
-          KeyboardConfig.MOUSE_FIRST_SKILL.value(), hero -> SKILL.execute(hero), true, false);
+          KeyboardConfig.MOUSE_FIRST_SKILL.value(), hero -> FIREBALL_SKILL.execute(hero), true, false);
       pc.registerCallback(
           KeyboardConfig.MOUSE_INTERACT_WORLD.value(),
           DevHeroFactory::handleInteractWithClosestInteractable,
@@ -134,7 +150,7 @@ public class DevHeroFactory extends HeroFactory {
             Point mousePosition = SkillTools.cursorPositionAsPoint();
             Entity interactable = checkIfClickOnInteractable(mousePosition).orElse(null);
             if (interactable == null || !interactable.isPresent(InteractionComponent.class)) {
-              SKILL.execute(hero);
+              FIREBALL_SKILL.execute(hero);
             } else {
               handleInteractWithClosestInteractable(hero);
             }

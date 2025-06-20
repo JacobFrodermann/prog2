@@ -1,8 +1,13 @@
 package contrib.utils.components.skill;
 
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+
+import contrib.components.AIComponent;
+import core.Entity;
 import core.Game;
 import core.components.PositionComponent;
 import core.systems.CameraSystem;
@@ -88,5 +93,20 @@ public final class SkillTools {
             .orElseThrow(
                 () -> MissingComponentException.build(Game.hero().get(), PositionComponent.class));
     return pc.position();
+  }
+  public static Point closesMonsterPostionAsPoint(Entity source) {
+    Point srcLoc = source.fetch(PositionComponent.class).get().position();
+    List<PositionComponent> monsters = Game.entityStream()
+      .filter(e -> e.fetch(AIComponent.class).isPresent())
+      .map(e -> e.fetch(PositionComponent.class).get())
+      .sorted((e1, e2) -> {
+        double d1 = e1.position().distance(srcLoc);
+        double d2 = e2.position().distance(srcLoc);
+        return Double.compare(d1, d2);
+      }).toList();
+    if (monsters.size() == 0) {
+      return new Point(0,0);
+    }
+    return monsters.get(0).position();
   }
 }

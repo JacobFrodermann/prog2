@@ -34,6 +34,29 @@ import level.utils.LevelUtils;
 import task.tasktype.Quiz;
 
 public enum MonsterType {
+  PROTECTOR(
+    "Protector",
+    "character/monster/zombie",
+    10,
+    1f,
+    1f,
+    MonsterDeathSound.BASIC,
+    () -> {
+        return new RangeAI(
+              7f,
+              0f,
+              new Skill(
+                new FireballSkill(SkillTools::heroPositionAsPoint),  
+              //  new FireballSkill(SkillTools::closesMonsterPostionAsPoint),
+                  AIFactory.FIREBALL_COOL_DOWN));
+                },
+    () -> new RadiusWalk(2f, 2),
+    () -> new RangeTransition(0),
+    7,
+    2 * Game.frameRate(),
+    MonsterIdleSound.LOW_PITCH,
+    0
+  ),
   CHORT(
       "Chort",
       "character/monster/chort",
