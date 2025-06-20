@@ -5,6 +5,8 @@ import components.ReviveComponent;
 import contrib.entities.IHealthObserver;
 import contrib.systems.HealthSystem;
 import contrib.utils.components.health.DamageType;
+import core.components.PlayerComponent;
+
 import java.util.stream.Stream;
 
 public class DevHealthSystem extends HealthSystem {
@@ -34,23 +36,25 @@ public class DevHealthSystem extends HealthSystem {
 
   @Override
   protected HSData applyDamage(final HSData hsd) {
-    MagicShieldComponent msc = hsd.e().fetch(MagicShieldComponent.class).orElse(null);
-    if (msc == null || msc.isDepleted()) {
+    if (hsd.e().isPresent(PlayerComponent.class)) return hsd;
+     MagicShieldComponent msc = hsd.e().fetch(MagicShieldComponent.class).orElse(null);
+     
+     if (msc == null || msc.isDepleted()) {
       return super.applyDamage(hsd);
     }
     int damage =
-        Stream.of(DamageType.values())
-            .filter(dt -> dt != DamageType.HEAL)
-            .mapToInt(hsd.hc()::calculateDamageOf)
-            .sum();
+    Stream.of(DamageType.values())
+    .filter(dt -> dt != DamageType.HEAL)
+    .mapToInt(hsd.hc()::calculateDamageOf)
+    .sum();
     int heal = hsd.hc().calculateDamageOf(DamageType.HEAL);
-
+    
     msc.hit(damage);
     this.doDamageAndAnimation(hsd, heal);
     hsd.hc().clearDamage();
     this.observers.forEach(
-        observer -> observer.onHeathEvent(hsd.e(), hsd.hc(), IHealthObserver.HealthEvent.DAMAGE));
-    return hsd;
+      observer -> observer.onHeathEvent(hsd.e(), hsd.hc(), IHealthObserver.HealthEvent.DAMAGE));
+      return hsd;
   }
 
   private boolean shouldDie(final HSData hsd) {
